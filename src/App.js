@@ -37,13 +37,13 @@ const App = () => {
     }
     if (result.charAt(0) === '+') result = result.substring(1);
     if (result.charAt(result.length - 1) === '+' || result.charAt(result.length - 1) === '-') result = result.substring(0, result.length - 1);
-    setMibunResult(result);
-    setMibunResultHTML(result.replaceAll('^', '<sup>').replaceAll('x', '</sup>x'));
+    setMibunResult(result.replaceAll('endsup', ''));
+    setMibunResultHTML(result.replaceAll('^', '<sup>').replaceAll('endsup', '</sup>'));
 
     const app = window.ggbApplet;
     app.reset();
     app.evalCommand(equation);
-    app.evalCommand(result);
+    app.evalCommand(result.replaceAll('endsup', ''));
   }
 
   const calculate = (a, b) => { //ax^b
@@ -54,7 +54,7 @@ const App = () => {
     } else if (b - 1 === 0) {
       return (a * b);
     } else {
-      return (a * b) + 'x^' + (b - 1);
+      return (a * b) + 'x^' + (b - 1) + 'endsup';
     }
   }
 
@@ -70,7 +70,7 @@ const App = () => {
       <br></br><br></br>
       <Button className="btn" variant="contained" sx={{ borderRadius: '10px' }} onClick={derive}>해줘</Button>
 
-      <div className="resultText" dangerouslySetInnerHTML={{ __html: mibunResult }} />
+      <div className="resultText" dangerouslySetInnerHTML={{ __html: mibunResultHTML }} />
       <br></br>
       <Geogebra
         width="800"
